@@ -9,6 +9,8 @@ import Genres from './components/pages/Genres.tsx';
 import EditMovie from './components/pages/EditMovie.tsx';
 import ManageCatalog from './components/pages/ManageCatalog.tsx';
 import Graphql from './components/pages/Graphql.tsx';
+import MovieDetails from './components/pages/MovieDetails.tsx';
+import Login from './components/pages/Login.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +19,9 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
+      { path: '/login', element: <Login /> },
       { path: '/movies', element: <Movies /> },
+      { path: '/movies/:id', element: <MovieDetails /> },
       { path: '/genres', element: <Genres /> },
       { path: '/admin/movie/0', element: <EditMovie /> },
       { path: '/admin', element: <ManageCatalog /> },
