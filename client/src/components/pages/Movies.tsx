@@ -2,28 +2,20 @@ import { useEffect, useState } from 'react';
 import { Movie } from '../../models/movie';
 import { Link } from 'react-router-dom';
 
+const apiUrl = import.meta.env.VITE_API_URL;
 export default function Movies() {
   const [movies, setMovies] = useState<Movie[]>([]);
   useEffect(() => {
-    const moviesList: Movie[] = [
-      {
-        id: 1,
-        title: 'Highlander',
-        release_date: '1986-03-07',
-        runtime: 116,
-        mpaa_rating: 'R',
-        description: 'Some long description',
-      },
-      {
-        id: 2,
-        title: 'Raiders of the Lost Ark',
-        release_date: '1981-06-12',
-        runtime: 115,
-        mpaa_rating: 'PG-13',
-        description: 'Some long description',
-      },
-    ];
-    setMovies(moviesList);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    const requestOptions = {
+      method: 'GET',
+      headers: headers,
+    };
+    fetch(`${apiUrl}/movies`, requestOptions)
+      .then((res) => res.json())
+      .then((data) => setMovies(data))
+      .catch((err) => console.log(err));
   }, []);
   const renderedMovies = movies.map((movie) => {
     return (
