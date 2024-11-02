@@ -8,7 +8,7 @@ interface OutletContextTypes {
   setAlertClassName: React.Dispatch<React.SetStateAction<string>>;
   setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
 }
-
+const apiUrl = import.meta.env.VITE_API_URL;
 export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -18,17 +18,38 @@ export default function Login() {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log('email/pass', email, password);
+    // build the request payload
+    const payload = {
+      email: email,
+      password: password,
+    };
+    const requestOptions: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload),
+    };
 
-    if (email === 'admin@example.com') {
-      setJwtToken('abc');
-      setAlertClassName('d-none');
-      setAlertMessage('');
-      navigate('/');
-    } else {
-      setAlertClassName('alert-danger');
-      setAlertMessage('Invalid credentials');
-    }
+    fetch(`${apiUrl}/authenticate`, requestOptions)
+      .then((r) => r.json())
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          setAlertClassName('alert-danger');
+          setAlertMessage(data.message);
+        } else {
+          setJwtToken(data.access_token);
+          setAlertClassName('d-none');
+          setAlertMessage('');
+          navigate('/');
+        }
+      })
+      .catch(() => {
+        setAlertClassName('alert-danger');
+        setAlertMessage('Something went wrong(((');
+      });
   };
   return (
     <>
