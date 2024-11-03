@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 )
 
@@ -24,4 +25,29 @@ func (app *application) Home(w http.ResponseWriter, r *http.Request) {
 		Version: "1.0.0",
 	}
 	_ = app.WriteJSON(w, http.StatusOK, payload)
+}
+
+func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
+	// read json payload
+
+	// validate user against DB
+
+	// check password
+
+	// create a jwt user
+	u := jwtUser{
+		ID:        1,
+		FirstName: "Admin",
+		LastName:  "User",
+	}
+
+	// generate tokens
+	tokens, err := app.auth.GenerateTokenPair(&u)
+	if err != nil {
+		app.ErrorJSON(w, err)
+		return
+	}
+
+	log.Println(tokens.Token)
+	w.Write([]byte(tokens.Token))
 }
