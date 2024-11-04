@@ -36,7 +36,7 @@ export default function Login() {
       .then((r) => r.json())
       .then((data) => {
         console.log(data);
-        if (data.error) {
+        if (data.has_error) {
           setAlertClassName('alert-danger');
           setAlertMessage(data.message);
         } else {
@@ -46,9 +46,10 @@ export default function Login() {
           navigate('/');
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         setAlertClassName('alert-danger');
-        setAlertMessage('Something went wrong(((');
+        setAlertMessage(err);
       });
   };
   return (
