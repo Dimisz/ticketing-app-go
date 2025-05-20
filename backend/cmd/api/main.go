@@ -22,8 +22,8 @@ func main() {
 
 	// start a web server
 	log.Println("starting appliation on port", PORT)
-	http.HandleFunc("/", Hello)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", PORT), nil)
+
+	err := http.ListenAndServe(fmt.Sprintf(":%d", PORT), app.routes())
 	if err != nil {
 		log.Fatal(err)
 	}
