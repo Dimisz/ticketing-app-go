@@ -29,6 +29,7 @@ func main() {
 		log.Fatal(err)
 	}
 	app.DB = conn
+	defer app.DB.Close()
 	// start a web server
 	log.Println("starting appliation on port", PORT)
 
